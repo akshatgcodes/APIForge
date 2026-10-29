@@ -164,3 +164,18 @@ def test_timeout_and_connect_errors(mock):
     with pytest.raises(proxy.ProxyError, match="Couldn't connect") as e:
         send()
     assert e.value.status == 502
+
+
+def test_header_values_trimmed_and_bad_ones_rejected(mock):
+    seen = mock(lambda r: httpx.Response(204))
+    send(headers=[("Authorization", "Bearer ")])
+    assert seen[0].headers["authorization"] == "Bearer"
+
+    def reject(r):
+        # What h11 raises on the wire for a value it won't send
+        raise httpx.LocalProtocolError("Illegal header value")
+
+    mock(reject)
+    with pytest.raises(proxy.ProxyError, match="Invalid request") as e:
+        send()
+    assert e.value.status == 400

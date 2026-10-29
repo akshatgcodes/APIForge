@@ -108,7 +108,9 @@ def send(
     allow_private: bool = False,
     timeout: float = 30.0,
 ) -> Result:
-    out_headers = [(k, v) for k, v in headers if k and k.lower() not in _DROP]
+    # Surrounding whitespace isn't part of a header value (RFC 9110), and h11 rejects it,
+    # so "Bearer {{token}}" with an empty token still sends
+    out_headers = [(k.strip(), v.strip()) for k, v in headers if k and k.lower() not in _DROP]
     if not any(k.lower() == "user-agent" for k, _ in out_headers):
         out_headers.append(("User-Agent", USER_AGENT))
     # A GET with a body is unusual but legal; send whatever the user wrote, like curl
@@ -126,6 +128,8 @@ def send(
                 raise ProxyError(f"Timed out after {timeout:g}s", 504) from e
             except httpx.InvalidURL as e:
                 raise ProxyError(f"Invalid URL: {e}") from e
+            except httpx.LocalProtocolError as e:
+                raise ProxyError(f"Invalid request: {e}") from e
             except httpx.HTTPError as e:
                 raise ProxyError(f"Couldn't connect: {e}", 502) from e
             try:
