@@ -14,6 +14,9 @@
 </p>
 
 <p align="center">
+  <a href="https://apiforge.akshatgcodes.in">
+    <img src="https://img.shields.io/badge/live_demo-0f766e-0f766e?style=flat-square" alt="Live Demo">
+  </a>
   <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" alt="React">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
   <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
@@ -28,6 +31,9 @@
 A lightweight Postman alternative that runs in the browser: no Electron, no install. Group requests into collections and folders, set method, URL, headers and body, send them, and read the status, timing, size, headers and body.
 
 The feature that makes it useful for real workflows is **request chaining**. Send `POST /login`, pick `access_token` out of the JSON response, and every later request that has `Authorization: Bearer {{token}}` uses it. Create a resource, keep its `id`, then fetch, update and delete it. The collection runner does all of that in order and shows which step broke.
+
+> **Live demo →** [apiforge.akshatgcodes.in](https://apiforge.akshatgcodes.in)
+> Log in with the demo password `demo1234`, click **Load the example**, then **Run all**.
 
 ---
 
